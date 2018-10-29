@@ -663,7 +663,7 @@ int adventurerCard(int drawntreasure, int currentPlayer, struct gameState *state
       }
       while(z>=0){
 	state->discard[currentPlayer][state->discardCount[currentPlayer]++]=temphand[z-1]; // discard all cards in play that have been drawn
-	z=z+1; // Bug - Should be (z = z - 1); - Will cause an infinite loop
+	z=z-1; // Bug - Should be (z = z - 1); - Will cause an infinite loop
       }
       return 0;
 			
