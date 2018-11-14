@@ -73,11 +73,32 @@ unittestresults: unittest1.c unittest2.c unittest3.c unittest4.c cardtest1.c car
 	gcc -o cardtest4 -g cardtest4.c dominion.o rngs.o $(CFLAGS)
 	./cardtest4 >> unittestresults.out
 	gcov -b dominion.c >> unittestresults.out
+
+randomtest: randomtestcard1.c randomtestcard2.c randomtestadventurer.c dominion.o rngs.o
+	echo "Results for Dominion Card Random Test:" >> randomtestcard1.out
+	
+	echo "randomtestcard1.c:" >> randomtestcard1.out
+	gcc -o randomtestcard1 -g randomtestcard1.c dominion.o rngs.o $(CFLAGS)
+	./randomtestcard1 >> randomtestcard1.out
+	gcov -b dominion.c >> randomtestcard1.out
+	gcov -b -f dominion.c | grep "smithyCard" -B 0 -A 5  >> randomtestcard1.out
+	
+	echo "randomtestcard2.c" >> randomtestcard2.out
+	gcc -o randomtestcard2 -g randomtestcard2.c dominion.o rngs.o $(CFLAGS)
+	./randomtestcard2 >> randomtestcard2.out
+	gcov -b dominion.c >> randomtestcard2.out	
+	gcov -b -f dominion.c | grep "villageCard" -B 0 -A 5 >> randomtestcard2.out
+		
+	echo "randomtestadventurer.c:" >> randomtestadventurer.out
+	gcc -o randomtestadventurer -g randomtestadventurer.c dominion.o rngs.o $(CFLAGS)
+	./randomtestadventurer >> randomtestadventurer.out
+	gcov -b dominion.c >> randomtestadventurer.out
+	gcov -b -f dominion.c | grep "adventurerCard" -B 0 -A 5 >> randomtestadventurer.out	
 	
 player: player.c interface.o
 	gcc -o player player.c -g dominion.o rngs.o interface.o $(CFLAGS)
 
-all: playdom player unittestresults
+all: playdom player unittestresults randomtest
 
 clean:
-	rm -f *.o playdom.exe playdom player unittestresults player.exe *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe
+	rm -f *.o playdom.exe playdom player unittestresults randomtest player.exe *.gcov *.gcda *.gcno *.so *.out testDrawCard testDrawCard.exe
